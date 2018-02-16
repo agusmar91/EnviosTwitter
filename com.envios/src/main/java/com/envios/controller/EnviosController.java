@@ -8,7 +8,7 @@ public class EnviosController {
 	
 	@RequestMapping(value="/entregar")
 	public String principal() {
-		//Redireccion hacia el form de entrega
+		
 		return "entregar";
 	}
 
