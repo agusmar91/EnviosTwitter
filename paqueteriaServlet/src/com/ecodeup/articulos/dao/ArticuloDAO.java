@@ -31,9 +31,13 @@ public class ArticuloDAO {
 
 	// insertar artículo
 	public boolean insertar(Articulo articulo) throws SQLException, ParseException {
-		String string = articulo.getFecha().toString();
-		DateFormat format = new SimpleDateFormat("yyyy-dd-MM");
-		Date date = format.parse(string);
+	//	String string = articulo.getFecha().toString();
+		@SuppressWarnings("deprecation")
+		java.util.Date string=new java.util.Date("10/10/1999");
+		
+		//DateFormat format = new SimpleDateFormat("yyyy-dd-MM hh:mm:ss");
+		//java.util.Date date = format.parse(string);
+		java.sql.Date date2 = new java.sql.Date(string.getTime());
 		
 		String sql = "INSERT INTO articulos (id, origen, destino, paquete, fecha, remitente,transportista,precio) VALUES (?,?,?,?,?,?,?,?)";
 		System.out.println(articulo.getPaquete());
@@ -44,7 +48,7 @@ public class ArticuloDAO {
 		statement.setString(2, articulo.getOrigen());
 		statement.setString(3, articulo.getDestino());
 		statement.setString(4, articulo.getPaquete());
-		statement.setDate(5, null);
+		statement.setDate(5, date2);
 		statement.setString(6, articulo.getRemitente());
 		statement.setString(7, articulo.getTransportista());
 		statement.setDouble(8, articulo.getPrecio());
