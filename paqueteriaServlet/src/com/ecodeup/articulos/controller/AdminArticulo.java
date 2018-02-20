@@ -106,7 +106,7 @@ public class AdminArticulo extends HttpServlet {
         String usu, pass;
         usu = request.getParameter("user");
         pass = request.getParameter("password");
-        //deberíamos buscar el usuario en la base de datos, pero dado que se escapa de este tema, ponemos un ejemplo en el mismo código
+       
         if(usu.equals("admin") && pass.equals("admin") && sesion.getAttribute("usuario") == null){
             //si coincide usuario y password y además no hay sesión iniciada
             sesion.setAttribute("usuario", usu);
@@ -152,10 +152,15 @@ public class AdminArticulo extends HttpServlet {
 	
 	
 	private void mostrar(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException , ServletException{
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/vista/mostrar.jsp");
+		System.out.println("Estor dentro de mostrar");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/vista/privado/mostrar.jsp");
+		System.out.println("1");
 		List<Articulo> listaArticulos= articuloDAO.listarArticulos();
+		System.out.println("3");
 		request.setAttribute("lista", listaArticulos);
+		System.out.println("2");
 		dispatcher.forward(request, response);
+		System.out.println("final de mosrar");
 	}	
 	
 //	private void showEditar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {

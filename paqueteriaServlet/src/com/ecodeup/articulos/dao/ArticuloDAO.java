@@ -31,7 +31,8 @@ public class ArticuloDAO {
 
 	// insertar artículo
 	public boolean insertar(Articulo articulo) throws SQLException, ParseException {
-		//String string = articulo.getFecha().toString();
+		String string2 = articulo.getFecha().toString();
+		System.out.println(string2);
 		@SuppressWarnings("deprecation")
 		java.util.Date string=new java.util.Date("10/10/1999");
 		
@@ -61,14 +62,17 @@ public class ArticuloDAO {
 
 	// listar todos los productos
 	public List<Articulo> listarArticulos() throws SQLException {
-
+		System.out.println("listar");
 		List<Articulo> listaArticulos = new ArrayList<Articulo>();
 		String sql = "SELECT * FROM articulos";
+		System.out.println("despues del select");
 		con.conectar();
 		connection = con.getJdbcConnection();
+		System.out.println("conexion");
 		Statement statement = connection.createStatement();
 		ResultSet resulSet = statement.executeQuery(sql);
-
+		System.out.println("resultser");
+		System.out.println("Antes del while");
 		while (resulSet.next()) {
 			int id = resulSet.getInt("id");
 			String origen = resulSet.getString("origen");
@@ -81,6 +85,7 @@ public class ArticuloDAO {
 			Articulo articulo = new Articulo(id, origen,destino,paquete,fecha,remitente,transportista,precio);
 			listaArticulos.add(articulo);
 		}
+		System.out.println("Despues del while");
 		con.desconectar();
 		return listaArticulos;
 	}

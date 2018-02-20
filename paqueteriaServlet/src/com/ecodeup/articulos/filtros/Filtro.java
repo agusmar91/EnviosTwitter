@@ -15,22 +15,21 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet Filter implementation class Filtro
  */
-@WebFilter(filterName="/Filtro", urlPatterns="/vista/mostrar.jsp")
+@WebFilter(filterName="/Filtro", urlPatterns="/vista/privado")
 public class Filtro implements Filter {
 
     /**
      * Default constructor. 
      */
     public Filtro() {
-//         TODO Auto-generated constructor st
-         System.out.println("Filtrpo");
+    	System.out.println("filtro");
     }
 
 	/**
 	 * @see Filter#destroy()
 	 */
 	public void destroy() {
-		// TODO Auto-generated method stub
+
 	}
 
 	/**
@@ -57,7 +56,6 @@ public class Filtro implements Filter {
 	 * @see Filter#init(FilterConfig)
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
-		// TODO Auto-generated method stub
 	}
 
 }

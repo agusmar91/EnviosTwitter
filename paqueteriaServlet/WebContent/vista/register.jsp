@@ -10,8 +10,8 @@
 
 		<h2>Introduce los datos</h2>
 
-		<form action="adminArticulo?action=register" method="post">
-
+		<form action="RegistrarController" method="post">
+		
 			Fecha de entrega: <input type="date" name="fecha"/> <br>
 
 			Tamaño: <select name="paquete">
