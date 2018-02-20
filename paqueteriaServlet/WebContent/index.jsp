@@ -13,7 +13,8 @@
 			<td align="center"><a href="adminArticulo?action=nuevo">Llevamelo</a></td>			
 		</tr>
 		<tr>
-			<td align="center"><a href="adminArticulo?action=mostrar">Te lo llevo</a></td>
+			<td align="center"><a href="vista/login.jsp">Te lo llevo</a></td> 
+<!-- 			adminArticulo?action=mostrar -->
 		</tr>
 	</table>
 	
