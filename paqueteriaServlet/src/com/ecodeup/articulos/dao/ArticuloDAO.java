@@ -31,7 +31,7 @@ public class ArticuloDAO {
 
 	// insertar artículo
 	public boolean insertar(Articulo articulo) throws SQLException, ParseException {
-	//	String string = articulo.getFecha().toString();
+		//String string = articulo.getFecha().toString();
 		@SuppressWarnings("deprecation")
 		java.util.Date string=new java.util.Date("10/10/1999");
 		

@@ -70,7 +70,7 @@ public class AdminArticulo extends HttpServlet {
 			case "mostrar":
 				mostrar(request, response);
 				break;
-//			case "showedit":SSS
+//			case "showedit":
 //				showEditar(request, response);
 //				break;	
 //			case "editar":

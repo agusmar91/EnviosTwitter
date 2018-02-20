@@ -26,6 +26,7 @@
 		 <td>Remitente</td>
 		 <td>Transportista</td>
 		 <td>Precio</td>
+		 <td>Ruta</td>
 		 <td colspan=2>ACCIONES</td>
 		</tr>
 		<c:forEach var="articulo" items="${lista}">
@@ -33,10 +34,12 @@
 				<td><c:out value="${articulo.id}"/></td>
 				<td><c:out value="${articulo.origen}"/></td>
 				<td><c:out value="${articulo.destino}"/></td>
+				<td><c:out value="${articulo.paquete}"/></td>
 				<td><c:out value="${articulo.fecha}"/></td>
 				<td><c:out value="${articulo.remitente}"/></td>
 				<td><c:out value="${articulo.transportista}"/></td>
 				<td><c:out value="${articulo.precio}"/></td>
+				<td><a href="vista/mapa.jsp?origen=${articulo.origen}&destino=${articulo.destino}">Ruta</a>
 				<td><a href="adminArticulo?action=showedit&id=<c:out value="${articulo.id}" />">Editar</a></td>
 				<td><a href="adminArticulo?action=eliminar&id=<c:out value="${articulo.id}"/>">Eliminar</a> </td>				
 			</tr>
