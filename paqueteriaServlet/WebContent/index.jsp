@@ -14,8 +14,9 @@
 		</tr>
 		<tr>
 			<td align="center"><a href="vista/login.jsp">Te lo llevo</a></td> 
-<!-- 			adminArticulo?action=mostrar -->
 		</tr>
+		<tr>
+			<td align="center"><a href="adminArticulo?action=mostrar">Mostrar todos los pedidos</a>
 	</table>
 	
 	

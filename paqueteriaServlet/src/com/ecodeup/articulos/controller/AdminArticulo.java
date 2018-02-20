@@ -53,9 +53,8 @@ public class AdminArticulo extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("Hola Servlet..");
+		
 		String action = request.getParameter("action");
-		System.out.println(action);
 		try {
 			switch (action) {
 			case "index":
@@ -71,15 +70,15 @@ public class AdminArticulo extends HttpServlet {
 			case "mostrar":
 				mostrar(request, response);
 				break;
-//			case "showedit":
-//				showEditar(request, response);
-//				break;	
-//			case "editar":
-//				editar(request, response);
-//				break;
-//			case "eliminar":
-//				eliminar(request, response);
-//				break;
+			case "showedit":
+				showEditar(request, response);
+				break;	
+			case "editar":
+				editar(request, response);
+				break;
+			case "eliminar":
+				eliminar(request, response);
+				break;
 			default:
 				break;
 			}			
@@ -108,10 +107,9 @@ public class AdminArticulo extends HttpServlet {
         pass = request.getParameter("password");
        
         if(usu.equals("admin") && pass.equals("admin") && sesion.getAttribute("usuario") == null){
-            //si coincide usuario y password y además no hay sesión iniciada
             sesion.setAttribute("usuario", usu);
-            //redirijo a página con información de login exitoso
-            response.sendRedirect("adminArticulo?action=mostrar");
+            //response.sendRedirect("adminArticulo?action=mostrar");
+            response.sendRedirect("vista/privado/buscar.jsp");
         }else{
         	response.sendRedirect("vista/login.jsp");
         	System.out.println("Error de login");
@@ -119,19 +117,21 @@ public class AdminArticulo extends HttpServlet {
 	}
 	
 	private void index (HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
-		//mostrar(request, response);
+		
 		RequestDispatcher dispatcher= request.getRequestDispatcher("index.jsp");
 		dispatcher.forward(request, response);
 	}
 
 	private void registrar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, NumberFormatException, ParseException {
-	//	SimpleDateFormat format = new SimpleDateFormat("YYYY,mm,dd");
-	//	Date date = (Date) format.parse(request.getParameter("fecha"));
+		//SimpleDateFormat format = new SimpleDateFormat("YYYY,mm,dd");
+		
 		
 		String string = request.getParameter("fecha");
 		DateFormat format = new SimpleDateFormat("yyyy-dd-MM");
+		Date date2 = (Date) format.parse(request.getParameter("fecha"));
+		System.out.println("Fecha que tampoco es"+request.getParameter("fecha").toString());
+		System.out.println("Fecha que no va"+date2);
 		Date date = format.parse(string);
-		
 		
 		Articulo articulo = new Articulo(0, request.getParameter("origen"), request.getParameter("destino"), request.getParameter("paquete"), date, request.getParameter("remitente"),request.getParameter("transportista"), Double.parseDouble(request.getParameter("precio")));
 		articuloDAO.insertar(articulo);
@@ -152,36 +152,50 @@ public class AdminArticulo extends HttpServlet {
 	
 	
 	private void mostrar(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException , ServletException{
-		System.out.println("Estor dentro de mostrar");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/vista/privado/mostrar.jsp");
-		System.out.println("1");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/vista/mostrar.jsp");
+	
 		List<Articulo> listaArticulos= articuloDAO.listarArticulos();
-		System.out.println("3");
+	
 		request.setAttribute("lista", listaArticulos);
-		System.out.println("2");
+	
 		dispatcher.forward(request, response);
-		System.out.println("final de mosrar");
+		
 	}	
 	
-//	private void showEditar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-//		Articulo articulo = articuloDAO.obtenerPorId(Integer.parseInt(request.getParameter("id")));
-//		request.setAttribute("articulo", articulo);
-//		
-//		RequestDispatcher dispatcher = request.getRequestDispatcher("/vista/editar.jsp");
-//		dispatcher.forward(request, response);
-//	}
+	private void mostrarOrigen(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException , ServletException{
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/vista/privado/tablaPedidos.jsp");
+		String origen =request.getParameter("origen");
+		List<Articulo> listaArticulos= articuloDAO.obtenerPorOrigenDestino(origen);
 	
-//	private void editar(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
-//		Articulo articulo = new Articulo(Integer.parseInt(request.getParameter("id")), request.getParameter("codigo"), request.getParameter("nombre"), request.getParameter("descripcion"), Double.parseDouble(request.getParameter("existencia")), Double.parseDouble(request.getParameter("precio")));
-//		articuloDAO.actualizar(articulo);
-//		index(request, response);
-//	}
-//	
-//	private void eliminar(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
-//		Articulo articulo = articuloDAO.obtenerPorId(Integer.parseInt(request.getParameter("id")));
-//		articuloDAO.eliminar(articulo);
-//		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
-//		dispatcher.forward(request, response);
-//		
-//	}
+		request.setAttribute("lista", listaArticulos);
+	
+		dispatcher.forward(request, response);
+		
+	}	
+	private void showEditar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+		Articulo articulo = articuloDAO.obtenerPorId(Integer.parseInt(request.getParameter("id")));
+		request.setAttribute("articulo", articulo);
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/vista/editar.jsp");
+		dispatcher.forward(request, response);
+	}
+	
+	private void editar(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException, ParseException{
+		String string = request.getParameter("fecha");
+		DateFormat format = new SimpleDateFormat("yyyy-dd-MM");
+		Date date = format.parse(string);
+		Articulo articulo = new Articulo(Integer.parseInt(request.getParameter("id")), request.getParameter("origen"), request.getParameter("destino"),
+				request.getParameter("paquete"), date,request.getParameter("remitente"), 
+				request.getParameter("transportista"),Double.parseDouble(request.getParameter("precio")));
+		articuloDAO.actualizar(articulo);
+		index(request, response);
+	}
+	
+	private void eliminar(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
+		Articulo articulo = articuloDAO.obtenerPorId(Integer.parseInt(request.getParameter("id")));
+		articuloDAO.eliminar(articulo);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+		dispatcher.forward(request, response);
+		
+	}
 }

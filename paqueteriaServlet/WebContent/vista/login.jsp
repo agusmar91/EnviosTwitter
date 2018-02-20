@@ -9,8 +9,8 @@
 <body>
 	<div align="center">
 		<form action="../adminArticulo" method="POST">
-			Usuario: <input type="text" name="user" value="usuario" /> <br/><br/>
-			Contraseña: <input type="password" name="password" value="contraseña" /><br/><br/> 
+			Usuario: <input type="text" name="user" value="admin" /> <br/><br/>
+			Contraseña: <input type="password" name="password" value="admin" /><br/><br/> 
 			<input type="submit" value="Enviar" />
 		</form>
 	</div>

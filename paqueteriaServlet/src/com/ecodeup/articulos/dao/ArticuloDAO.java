@@ -31,13 +31,10 @@ public class ArticuloDAO {
 
 	// insertar artículo
 	public boolean insertar(Articulo articulo) throws SQLException, ParseException {
-		String string2 = articulo.getFecha().toString();
-		System.out.println(string2);
+
 		@SuppressWarnings("deprecation")
-		java.util.Date string=new java.util.Date("10/10/1999");
 		
-		//DateFormat format = new SimpleDateFormat("yyyy-dd-MM hh:mm:ss");
-		//java.util.Date date = format.parse(string);
+		java.util.Date string=new java.util.Date("10/10/1999");
 		java.sql.Date date2 = new java.sql.Date(string.getTime());
 		
 		String sql = "INSERT INTO articulos (id, origen, destino, paquete, fecha, remitente,transportista,precio) VALUES (?,?,?,?,?,?,?,?)";
@@ -62,17 +59,16 @@ public class ArticuloDAO {
 
 	// listar todos los productos
 	public List<Articulo> listarArticulos() throws SQLException {
-		System.out.println("listar");
+		
 		List<Articulo> listaArticulos = new ArrayList<Articulo>();
 		String sql = "SELECT * FROM articulos";
-		System.out.println("despues del select");
+		
 		con.conectar();
 		connection = con.getJdbcConnection();
-		System.out.println("conexion");
+		
 		Statement statement = connection.createStatement();
 		ResultSet resulSet = statement.executeQuery(sql);
-		System.out.println("resultser");
-		System.out.println("Antes del while");
+
 		while (resulSet.next()) {
 			int id = resulSet.getInt("id");
 			String origen = resulSet.getString("origen");
@@ -85,52 +81,87 @@ public class ArticuloDAO {
 			Articulo articulo = new Articulo(id, origen,destino,paquete,fecha,remitente,transportista,precio);
 			listaArticulos.add(articulo);
 		}
-		System.out.println("Despues del while");
+
 		con.desconectar();
 		return listaArticulos;
 	}
 
-	// obtener por id
-//	public Articulo obtenerPorId(int id) throws SQLException {
-//		Articulo articulo = null;
-//
-//		String sql = "SELECT * FROM articulos WHERE id= ? ";
-//		con.conectar();
-//		connection = con.getJdbcConnection();
-//		PreparedStatement statement = connection.prepareStatement(sql);
-//		statement.setInt(1, id);
-//
-//		ResultSet res = statement.executeQuery();
-//		if (res.next()) {
-//			articulo = new Articulo(res.getInt("id"), res.getString("origen"), res.getString("destino"),
-//					res.getString("paquete"), res.getDate("fecha"), res.getString("remitente"), res.getString("transportista")res.getDouble("precio"));
-//		}
-//		res.close();
-//		con.desconectar();
-//
-//		return articulo;
-//	}
+	 //obtener por id
+	public Articulo obtenerPorId(int id) throws SQLException {
+		Articulo articulo = null;
 
-	// actualizar
-//	public boolean actualizar(Articulo articulo) throws SQLException {
-//		boolean rowActualizar = false;
-//		String sql = "UPDATE articulos SET codigo=?,nombre=?,descripcion=?,existencia=?, precio=? WHERE id=?";
-//		con.conectar();
-//		connection = con.getJdbcConnection();
-//		PreparedStatement statement = connection.prepareStatement(sql);
-//		statement.setString(1, articulo.getCodigo());
-//		statement.setString(2, articulo.getNombre());
-//		statement.setString(3, articulo.getDescripcion());
-//		statement.setDouble(4, articulo.getExistencia());
-//		System.out.println(articulo.getPrecio());
-//		statement.setDouble(5, articulo.getPrecio());
-//		statement.setInt(6, articulo.getId());
-//
-//		rowActualizar = statement.executeUpdate() > 0;
-//		statement.close();
-//		con.desconectar();
-//		return rowActualizar;
-//	}
+		String sql = "SELECT * FROM articulos WHERE id= ? ";
+		con.conectar();
+		connection = con.getJdbcConnection();
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setInt(1, id);
+
+		ResultSet res = statement.executeQuery();
+		if (res.next()) {
+			articulo = new Articulo(res.getInt("id"), res.getString("origen"), res.getString("destino"),
+					res.getString("paquete"), res.getDate("fecha"), res.getString("remitente"), res.getString("transportista"),Double.parseDouble(res.getString("precio")));
+		}
+		res.close();
+		con.desconectar();
+
+		return articulo;
+	}
+	
+	public List<Articulo> obtenerPorOrigenDestino(String origen1) throws SQLException {
+		//Al coger el valor de la base de datos que tiene una coma en medio, solo me coge lo que hay delante de la coma
+		
+		List<Articulo> listaArticulos = new ArrayList<Articulo>();
+		String sql = "SELECT * FROM articulos WHERE origen= ?";
+		System.out.println("En el dao "+origen1);
+		con.conectar();
+		connection = con.getJdbcConnection();
+		PreparedStatement ps = connection.prepareStatement(sql);
+		ps.setString(1, origen1);
+		System.out.println(sql);
+		Statement statement = connection.createStatement();
+		ResultSet resulSet = statement.executeQuery(sql);
+
+		while (resulSet.next()) {
+			int id = resulSet.getInt("id");
+			String origen = resulSet.getString("origen");
+			String destino = resulSet.getString("destino");
+			String paquete = resulSet.getString("paquete");
+			Date fecha = resulSet.getDate("fecha");
+			Double precio = resulSet.getDouble("precio");
+			String transportista= resulSet.getString("transportista");
+			String remitente = resulSet.getString("remitente");
+			Articulo articulo = new Articulo(id, origen,destino,paquete,fecha,remitente,transportista,precio);
+			listaArticulos.add(articulo);
+		}
+
+		con.desconectar();
+		return listaArticulos;
+	}
+
+	 //actualizar
+	public boolean actualizar(Articulo articulo) throws SQLException {
+		boolean rowActualizar = false;
+		java.util.Date string=new java.util.Date("10/10/1999");
+		java.sql.Date date = new java.sql.Date(string.getTime());
+		String sql = "UPDATE articulos SET id=?,origen=?,destino=?,paquete=?, fecha=?,remitente=?,transportista=?,precio=?    WHERE id=?";
+		con.conectar();
+		connection = con.getJdbcConnection();
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setInt(1, articulo.getId());
+		statement.setString(2, articulo.getOrigen());
+		statement.setString(3, articulo.getDestino());
+		statement.setString(4, articulo.getPaquete());
+		statement.setDate(5, date);
+		statement.setString(6, articulo.getRemitente());
+		statement.setString(7, articulo.getTransportista());
+		statement.setDouble(8, articulo.getPrecio());
+		statement.setInt(9, articulo.getId());
+
+		rowActualizar = statement.executeUpdate() > 0;
+		statement.close();
+		con.desconectar();
+		return rowActualizar;
+	}
 	
 	//eliminar
 	public boolean eliminar(Articulo articulo) throws SQLException {
