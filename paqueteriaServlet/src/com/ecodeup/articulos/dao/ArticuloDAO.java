@@ -111,15 +111,14 @@ public class ArticuloDAO {
 		//Al coger el valor de la base de datos que tiene una coma en medio, solo me coge lo que hay delante de la coma
 		
 		List<Articulo> listaArticulos = new ArrayList<Articulo>();
-		String sql = "SELECT * FROM articulos WHERE origen= ?";
+
 		System.out.println("En el dao "+origen1);
 		con.conectar();
 		connection = con.getJdbcConnection();
-		PreparedStatement ps = connection.prepareStatement(sql);
+		PreparedStatement ps = connection.prepareStatement("SELECT * FROM articulos WHERE origen=?");
 		ps.setString(1, origen1);
-		System.out.println(sql);
-		Statement statement = connection.createStatement();
-		ResultSet resulSet = statement.executeQuery(sql);
+
+		ResultSet resulSet = ps.executeQuery();
 
 		while (resulSet.next()) {
 			int id = resulSet.getInt("id");
