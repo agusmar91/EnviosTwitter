@@ -107,7 +107,7 @@ public class ArticuloDAO {
 		return articulo;
 	}
 	
-	public List<Articulo> obtenerPorOrigenDestino(String origen1) throws SQLException {
+	public List<Articulo> obtenerPorOrigenDestino(String origen1, String destino1) throws SQLException {
 		//Al coger el valor de la base de datos que tiene una coma en medio, solo me coge lo que hay delante de la coma
 		
 		List<Articulo> listaArticulos = new ArrayList<Articulo>();
@@ -115,8 +115,9 @@ public class ArticuloDAO {
 		System.out.println("En el dao "+origen1);
 		con.conectar();
 		connection = con.getJdbcConnection();
-		PreparedStatement ps = connection.prepareStatement("SELECT * FROM articulos WHERE origen=?");
+		PreparedStatement ps = connection.prepareStatement("SELECT * FROM articulos WHERE origen=? and destino=?");
 		ps.setString(1, origen1);
+		ps.setString(2, destino1);
 
 		ResultSet resulSet = ps.executeQuery();
 

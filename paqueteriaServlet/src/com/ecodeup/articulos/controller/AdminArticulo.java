@@ -85,10 +85,9 @@ public class AdminArticulo extends HttpServlet {
 		} catch (SQLException e) {
 			e.getStackTrace();
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -108,7 +107,6 @@ public class AdminArticulo extends HttpServlet {
        
         if(usu.equals("admin") && pass.equals("admin") && sesion.getAttribute("usuario") == null){
             sesion.setAttribute("usuario", usu);
-            //response.sendRedirect("adminArticulo?action=mostrar");
             response.sendRedirect("vista/privado/buscar.jsp");
         }else{
         	response.sendRedirect("vista/login.jsp");
@@ -123,14 +121,10 @@ public class AdminArticulo extends HttpServlet {
 	}
 
 	private void registrar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, NumberFormatException, ParseException {
-		//SimpleDateFormat format = new SimpleDateFormat("YYYY,mm,dd");
-		
-		
+
 		String string = request.getParameter("fecha");
 		DateFormat format = new SimpleDateFormat("yyyy-dd-MM");
 		Date date2 = (Date) format.parse(request.getParameter("fecha"));
-		System.out.println("Fecha que tampoco es"+request.getParameter("fecha").toString());
-		System.out.println("Fecha que no va"+date2);
 		Date date = format.parse(string);
 		
 		Articulo articulo = new Articulo(0, request.getParameter("origen"), request.getParameter("destino"), request.getParameter("paquete"), date, request.getParameter("remitente"),request.getParameter("transportista"), Double.parseDouble(request.getParameter("precio")));
@@ -165,7 +159,8 @@ public class AdminArticulo extends HttpServlet {
 	private void mostrarOrigen(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException , ServletException{
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/vista/privado/tablaPedidos.jsp");
 		String origen =request.getParameter("origen");
-		List<Articulo> listaArticulos= articuloDAO.obtenerPorOrigenDestino(origen);
+		String destino =request.getParameter("destino");
+		List<Articulo> listaArticulos= articuloDAO.obtenerPorOrigenDestino(origen,destino);
 	
 		request.setAttribute("lista", listaArticulos);
 	

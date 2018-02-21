@@ -54,10 +54,11 @@ public class OrigenDestinoController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/vista/privado/tablaPedidos.jsp");
 		String origen =request.getParameter("inicio");
+		String destino =request.getParameter("destino");
 		List<Articulo> listaArticulos = null;
 		System.out.println("En el controlador"+origen);
 			try {
-				listaArticulos = articuloDAO.obtenerPorOrigenDestino(origen);
+				listaArticulos = articuloDAO.obtenerPorOrigenDestino(origen,destino);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
